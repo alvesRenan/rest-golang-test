@@ -1,11 +1,16 @@
 package main
 
-var mockData []Container = []Container{}
+import (
+	"log"
+	"net/http"
+
+	"github.com/alvesRenan/rest-golang-test/conf"
+	"github.com/alvesRenan/rest-golang-test/routes"
+	_ "github.com/mattn/go-sqlite3"
+)
 
 func main() {
-	app := App{}
-
-	app.Initialize()
-	app.initializeDB()
-	app.Run()
+	conf.InitializeDB()
+	log.Println("Server started on port 8000")
+	log.Fatal(http.ListenAndServe(":8000", routes.NewRouter()))
 }

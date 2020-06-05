@@ -1,4 +1,5 @@
 vendor/
 example-main.go.org
 example-db.db
+sqlite.db
 rest-golang-test

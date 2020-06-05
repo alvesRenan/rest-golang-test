@@ -4,17 +4,17 @@ case $1 in
   create)
     curl -X POST \
       -H "Content-Type: application/json" \
-      -d '{"name": "teste-01", "net": "full", "adb": "5555", "vnc": "6080"}' \
+      -d '{"name": "teste-01", "net": "full", "serial_port": "5554", "adb_port": "5555", "vnc_port": "6080"}' \
       localhost:8000/container/create
     
     curl -X POST \
       -H "Content-Type: application/json" \
-      -d '{"name": "teste-02", "net": "lte", "adb": "5557", "vnc": "6081"}' \
+      -d '{"name": "teste-02", "net": "lte", "serial_port": "5556", "adb_port": "5557", "vnc_port": "6081"}' \
       localhost:8000/container/create
 
     curl -X POST \
       -H "Content-Type: application/json" \
-      -d '{"name": "teste-03", "net": "umts", "adb": "5559", "vnc": "6082"}' \
+      -d '{"name": "teste-03", "net": "full", "serial_port": "5558", "adb_port": "5559", "vnc_port": "6082"}' \
       localhost:8000/container/create
   ;;
   
@@ -45,7 +45,7 @@ case $1 in
 
   delete)
     if [[ $# != 2 ]]; then
-      echo "pass the id of the device as the second argument"
+      echo "pass the name of the container as the second argument"
       exit 1
     fi
 
@@ -65,21 +65,9 @@ case $1 in
       localhost:8000/scenario/delete/$2
   ;;
 
-  update)
-    if [[ $# != 2 ]]; then
-      echo "pass the id of the device as the second argument"
-      exit 1
-    fi
-
-    curl -X UPDATE \
-      -H "Content-Type: application/json" \
-      -d '{"name": "teste-update", "net": "full", "adb": "5561", "vnc": "6089"}' \
-      localhost:8000/container/update/$2
-  ;;
-
   *)
     echo -n "Usage: testing.sh <action> [argument]
-      action: create, list, delete, update
-      argument: device ID (need for delete and update)"
+      action: create, list, delete
+      argument: container name (needed for delete)"
 esac
 

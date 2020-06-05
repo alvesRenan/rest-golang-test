@@ -1,6 +1,6 @@
-package main
+package model
 
-import "database/sql"
+import "github.com/alvesRenan/rest-golang-test/conf"
 
 // Scenario is a struct that has all components of a scenario
 type Scenario struct {
@@ -8,7 +8,10 @@ type Scenario struct {
 	State string `json:"state"`
 }
 
-func (s *Scenario) createScenario(db *sql.DB) error {
+// CreateScenario add a new scenario to the db
+func (s *Scenario) CreateScenario() error {
+	db := conf.ConnectDB()
+
 	stmt, _ := db.Prepare("INSERT INTO scenarios (name, state) VALUES (?,?)")
 	defer stmt.Close()
 
@@ -16,16 +19,22 @@ func (s *Scenario) createScenario(db *sql.DB) error {
 		return nil
 	}
 
+	defer db.Close()
 	return nil
 }
 
-func (s *Scenario) deleteScenario(db *sql.DB) error {
+// DeleteScenario deletes a scenario given a name
+func (s *Scenario) DeleteScenario() error {
+	db := conf.ConnectDB()
 	_, err := db.Exec("DELETE FROM scenarios WHERE name=$1", s.Name)
 
+	defer db.Close()
 	return err
 }
 
-func getScenarios(db *sql.DB) ([]Scenario, error) {
+// GetScenarios returns a list of all scenarios
+func GetScenarios() ([]Scenario, error) {
+	db := conf.ConnectDB()
 	rows, err := db.Query("SELECT * FROM scenarios")
 	if err != nil {
 		return nil, err
@@ -44,5 +53,6 @@ func getScenarios(db *sql.DB) ([]Scenario, error) {
 		scenarios = append(scenarios, s)
 	}
 
+	defer db.Close()
 	return scenarios, nil
 }
