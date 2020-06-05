@@ -1,2 +1,4 @@
 vendor/
 example-main.go.org
+example-db.db
+rest-golang-test

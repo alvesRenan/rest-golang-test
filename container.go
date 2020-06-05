@@ -9,7 +9,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var c ClientContainer
+// Container is a struct that has all components of a container
+type Container struct {
+	ID      int    `json:"id"`
+	Name    string `json:"name"`
+	Network string `json:"net"`
+	AdbPort string `json:"adb"`
+	VNCPort string `json:"vnc"`
+}
+
+var c Container
 
 // adds a new device to the slice
 func createContainer(w http.ResponseWriter, r *http.Request) {
